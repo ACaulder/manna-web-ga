@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manna Search</title>
+    <!-- Optional: if you add a stylesheet later, this link will pick it up.
+         Keeping it here avoids inline styles to satisfy the linter. -->
+    <link rel="stylesheet" href="/manna.css" />
+  </head>
+  <body class="manna-page">
+    <main>
+      <h1>Manna Search</h1>
+
+      <form id="search-form" aria-label="Manna semantic search" autocomplete="off">
+        <label for="q">Query</label>
+        <input id="q" name="q" size="60" autofocus />
+
+        <label for="k">k</label>
+        <input id="k" name="k" type="number" value="5" min="1" max="50" />
+
+        <button id="go" type="submit">Search</button>
+      </form>
+
+      <pre id="out" aria-live="polite" aria-atomic="true"></pre>
+    </main>
+
+    <script>
+      // Adjust if your API runs elsewhere
+      const API = "http://127.0.0.1:8008";
+
+      const form = document.getElementById("search-form");
+      const btn = document.getElementById("go");
+      const out = document.getElementById("out");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const q = document.getElementById("q").value.trim();
+        const k = Number(document.getElementById("k").value) || 5;
+
+        if (!q) {
+          out.textContent = "Type a query first.";
+          return;
+        }
+
+        btn.disabled = true;
+        out.textContent = "…searching";
+
+        try {
+          const r = await fetch(`${API}/search`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ q, k })
+          });
+
+          const json = await r.json();
+          out.textContent = JSON.stringify(json, null, 2);
+        } catch (err) {
+          out.textContent = `Error: ${err?.message || err}`;
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

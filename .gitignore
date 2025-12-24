@@ -1,0 +1,20 @@
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Node / SvelteKit
+node_modules/
+.svelte-kit/
+build/
+dist/
+.vite/
+coverage/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
