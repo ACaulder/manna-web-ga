@@ -11,4 +11,4 @@ Disallow: /`;
 			'X-Robots-Tag': 'noindex, nofollow'
 		}
 	});
-}
+};

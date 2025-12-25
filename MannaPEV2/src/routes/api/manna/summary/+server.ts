@@ -5,17 +5,17 @@ import { json } from '@sveltejs/kit';
 import { buildSummary } from '$lib/server/manna/fsStore';
 
 export const GET: RequestHandler = async () => {
-  const summary = buildSummary();
+	const summary = buildSummary();
 
-  const peopleArray = Object.values(summary.peopleIndex).sort(
-    (a, b) => b.importanceScore - a.importanceScore
-  );
+	const peopleArray = Object.values(summary.peopleIndex).sort(
+		(a, b) => b.importanceScore - a.importanceScore
+	);
 
-  const openCommitments = summary.openCommitments;
+	const openCommitments = summary.openCommitments;
 
-  return json({
-    people: peopleArray,
-    openCommitments,
-    fileCount: summary.files.length
-  });
+	return json({
+		people: peopleArray,
+		openCommitments,
+		fileCount: summary.files.length
+	});
 };

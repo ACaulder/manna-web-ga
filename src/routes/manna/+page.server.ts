@@ -11,14 +11,14 @@ import type { RequestHandler } from './$types';
  * for the selected cluster.
  */
 export const GET: RequestHandler = async ({ params }) => {
-  const { id } = params;
+	const { id } = params;
 
-  // Placeholder: no docs yet, but the endpoint is valid.
-  const docs: any[] = [];
+	// Placeholder: no docs yet, but the endpoint is valid.
+	const docs: any[] = [];
 
-  return new Response(JSON.stringify(docs), {
-    headers: {
-      'content-type': 'application/json'
-    }
-  });
+	return new Response(JSON.stringify(docs), {
+		headers: {
+			'content-type': 'application/json'
+		}
+	});
 };
