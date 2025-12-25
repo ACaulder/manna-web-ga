@@ -24,5 +24,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Antigravity Verify
+        run: ./scripts/antigravity_verify.sh
+
       - name: Build
         run: npm run build

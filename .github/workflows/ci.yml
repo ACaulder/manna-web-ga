@@ -26,6 +26,9 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Antigravity Verify
+        run: ./scripts/antigravity_verify.sh
+
       - name: Lint
         run: npm run lint --if-present
 
