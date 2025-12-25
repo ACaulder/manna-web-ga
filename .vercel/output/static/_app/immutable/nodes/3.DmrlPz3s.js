@@ -1,1 +1,0 @@
-const o=async({fetch:a})=>{const e=await a("/api/captures");let t=null;return e.ok&&(t=await e.json()),{captures:t}},r=Object.freeze(Object.defineProperty({__proto__:null,load:o},Symbol.toStringTag,{value:"Module"}));export{r as universal};

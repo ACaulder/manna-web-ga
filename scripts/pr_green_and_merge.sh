@@ -143,6 +143,27 @@ else
   npm install
 fi
 
+
+# --- 4.5) SvelteKit hard rule: HTTP methods cannot live in +page.server.ts ---
+echo "=== Fixing illegal HTTP method exports in +page.server.ts (move to +server.ts)"
+set +e
+FILES="$(rg -l --glob 'src/routes/**/+page.server.ts' 'export const (GET|POST|PUT|PATCH|DELETE)\b' src/routes 2>/dev/null)"
+set -e
+
+if [ -n "${FILES:-}" ]; then
+  while IFS= read -r F; do
+    [ -z "$F" ] && continue
+    D="$(dirname "$F")"
+    if [ -f "$D/+server.ts" ]; then
+      echo "ERROR: $F exports HTTP methods but $D/+server.ts already exists. Fix manually."
+      exit 1
+    fi
+    echo "  - Moving: $F -> $D/+server.ts"
+    git mv "$F" "$D/+server.ts"
+  done <<< "$FILES"
+fi
+
+
 # --- 5) Format + verify ---
 echo "=== prettier write"
 npx prettier --write .
