@@ -2,8 +2,12 @@ name: CI
 
 on:
   pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -18,21 +22,17 @@ jobs:
           node-version: '20'
 
       - name: Install deps
+        if: hashFiles('package.json') != ''
         shell: bash
         run: |
-          if [ ! -f package.json ]; then
-            echo "No package.json; skipping install."
-            exit 0
-          fi
+          set -euo pipefail
 
           if [ -f pnpm-lock.yaml ]; then
             corepack enable
-            pnpm -v
             pnpm install --frozen-lockfile
             echo "PM=pnpm" >> "$GITHUB_ENV"
           elif [ -f yarn.lock ]; then
             corepack enable
-            yarn -v
             yarn install --immutable || yarn install --frozen-lockfile || yarn install
             echo "PM=yarn" >> "$GITHUB_ENV"
           elif [ -f package-lock.json ]; then
@@ -44,21 +44,18 @@ jobs:
           fi
 
       - name: Lint / Test / Build
+        if: hashFiles('package.json') != ''
         shell: bash
         run: |
-          if [ ! -f package.json ]; then
-            echo "No package.json; skipping scripts."
-            exit 0
-          fi
-
+          set -euo pipefail
           PM="${PM:-npm}"
+
           if [ "$PM" = "yarn" ]; then
-            # yarn has no --if-present; check existence first
-            node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.lint?0:1)" && yarn lint || true
-            node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.test?0:1)" && yarn test || true
-            node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.build?0:1)" && yarn build || true
+            if node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.lint?0:1)"; then yarn lint; fi
+            if node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.test?0:1)"; then yarn test; fi
+            if node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.build?0:1)"; then yarn build; fi
           else
             $PM run lint --if-present
-            $PM test --if-present
+            $PM run test --if-present
             $PM run build --if-present
           fi
