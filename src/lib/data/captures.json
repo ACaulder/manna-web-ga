@@ -1,355 +1,281 @@
 {
-  "captures": [
-    {
-      "id": "2025-11-26-angel-section-lead",
-      "created_at": "2025-11-26T07:30:00-05:00",
-      "status": "reviewed",
-      "source": "voice",
-      "location": "car",
-      "domains": [
-        "trader-joes",
-        "faith"
-      ],
-      "speakers": [
-        {
-          "id": "andrew",
-          "name": "Andrew",
-          "role": "self"
-        },
-        {
-          "id": "angel",
-          "name": "Angel",
-          "role": "mentioned"
-        }
-      ],
-      "people": [
-        {
-          "person_id": "angel",
-          "name": "Angel",
-          "relationship": "Store Leader",
-          "domains": [
-            "trader-joes"
-          ],
-          "note": "Talk about taking a section and demonstrating leadership through a micro-team."
-        }
-      ],
-      "scriptures": [
-        {
-          "reference": "Hebrews 6:19",
-          "themes": [
-            "hope",
-            "stability",
-            "storms"
-          ]
-        }
-      ],
-      "be": [
-        {
-          "id": "2025-11-26-be-calm-present-leader",
-          "statement": "Be a calm, present leader under pressure.",
-          "anti_identity": "Not the frantic firefighter who spreads anxiety.",
-          "practices": [
-            "Pause three seconds before responding to chaos.",
-            "Ask one clarifying question before giving direction."
-          ],
-          "horizon": "this_season",
-          "gravity": "high",
-          "scripture_refs": [
-            "Hebrews 6:19"
-          ],
-          "people_refs": [
-            "angel"
-          ]
-        }
-      ],
-      "know": [
-        {
-          "id": "2025-11-26-know-section-quest",
-          "truth": "Section leadership is about owning a micro-team, not chasing a title.",
-          "lie": "If I do not get a section quickly, I am failing.",
-          "horizon": "this_season",
-          "gravity": "medium",
-          "scripture_refs": [],
-          "people_refs": [
-            "angel"
-          ]
-        }
-      ],
-      "do": [
-        {
-          "id": "2025-11-26-do-text-angel-1on1",
-          "action": "Text Angel to schedule a 1:1 about taking a section.",
-          "kind": "action",
-          "clarity": "high",
-          "horizon": "this_week",
-          "gravity": "high",
-          "due": "2025-11-28",
-          "people_refs": [
-            "angel"
-          ],
-            "calendar_hint": "block-30"
-        }
-      ],
-      "feel": [
-        {
-          "id": "2025-11-26-feel-frustrated-training",
-          "current_emotion": "frustrated",
-          "intensity": 3,
-          "trigger": "Lack of proactive leadership training structure.",
-          "desired_direction": "Curious and hopeful about building the structure I want.",
-          "body_cues": "Tight chest, shallow breathing.",
-          "people_refs": [
-            "angel"
-          ],
-          "scripture_refs": [
-            "Hebrews 6:19"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "2025-11-25-ashley-evening-processing",
-      "created_at": "2025-11-25T21:45:00-05:00",
-      "status": "structured",
-      "source": "voice",
-      "location": "home",
-      "domains": [
-        "temple",
-        "relationships",
-        "faith"
-      ],
-      "speakers": [
-        {
-          "id": "andrew",
-          "name": "Andrew",
-          "role": "self"
-        },
-        {
-          "id": "ashley",
-          "name": "Ashley",
-          "role": "mentioned"
-        }
-      ],
-      "people": [
-        {
-          "person_id": "ashley",
-          "name": "Ashley",
-          "relationship": "Friend / Temple founder",
-          "domains": [
-            "temple",
-            "faith"
-          ],
-          "note": "Carrying a lot for Temple; excited but stretched by fundraising."
-        }
-      ],
-      "scriptures": [
-        {
-          "reference": "Matthew 6:11",
-          "themes": [
-            "daily bread",
-            "trust"
-          ]
-        }
-      ],
-      "be": [
-        {
-          "id": "2025-11-25-be-steady-encourager",
-          "statement": "Be a steady encourager for Ashley, not a sporadic hype man.",
-          "anti_identity": "Not the friend who only shows up when it is exciting.",
-          "practices": [
-            "Check in with a short voice note once a week.",
-            "Pray specifically for her rest, not just Temple growth."
-          ],
-          "horizon": "this_season",
-          "gravity": "covenant",
-          "scripture_refs": [
-            "Matthew 6:11"
-          ],
-          "people_refs": [
-            "ashley"
-          ]
-        }
-      ],
-      "know": [
-        {
-          "id": "2025-11-25-know-temple-manna",
-          "truth": "Temple will grow on God’s timing, not just hustle.",
-          "lie": "If we do not push constantly, Temple will die.",
-          "horizon": "this_season",
-          "gravity": "high",
-          "scripture_refs": [
-            "Matthew 6:11"
-          ],
-          "people_refs": [
-            "ashley"
-          ]
-        }
-      ],
-      "do": [
-        {
-          "id": "2025-11-25-do-text-ashley-checkin",
-          "action": "Send Ashley a short voice note asking how her heart is, not just Temple metrics.",
-          "kind": "action",
-          "clarity": "high",
-          "horizon": "today",
-          "gravity": "medium",
-          "people_refs": [
-            "ashley"
-          ],
-          "calendar_hint": "reachout"
-        },
-        {
-          "id": "2025-11-25-do-pray-temple-funding",
-          "action": "Pray specifically for Temple’s next funding step this week.",
-          "kind": "experiment",
-          "clarity": "medium",
-          "horizon": "this_week",
-          "gravity": "high",
-          "people_refs": [
-            "ashley"
-          ],
-          "calendar_hint": "prayer"
-        }
-      ],
-      "feel": [
-        {
-          "id": "2025-11-25-feel-burden-shared",
-          "current_emotion": "burdened but hopeful",
-          "intensity": 2,
-          "trigger": "Hearing how much weight Ashley is carrying.",
-          "desired_direction": "Grateful and steady, carrying some of that in prayer and action.",
-          "body_cues": "Slight heaviness in shoulders.",
-          "people_refs": [
-            "ashley"
-          ],
-          "scripture_refs": [
-            "Matthew 6:11"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "2025-11-22-ashley-andrew",
-      "created_at": "2025-11-22T20:00:00-05:00",
-      "status": "structured",
-      "source": "voice",
-      "location": "home",
-      "domains": [
-        "temple",
-        "faith",
-        "relationships"
-      ],
-      "speakers": [
-        {
-          "id": "andrew",
-          "name": "Andrew",
-          "role": "self"
-        },
-        {
-          "id": "ashley",
-          "name": "Ashley",
-          "role": "guest"
-        }
-      ],
-      "people": [
-        {
-          "person_id": "ashley",
-          "name": "Ashley",
-          "relationship": "Friend / Temple founder",
-          "domains": [
-            "temple",
-            "faith"
-          ],
-          "note": "Carrying excitement and weight for Temple; pulled between trusting God's timing and feeling pressure to push fundraising and logistics forward without burning out."
-        }
-      ],
-      "scriptures": [
-        {
-          "reference": "Matthew 6:11",
-          "themes": [
-            "daily bread",
-            "trust",
-            "provision"
-          ]
-        }
-      ],
-      "be": [
-        {
-          "id": "2025-11-22-be-steady-encourager",
-          "statement": "Be a steady encourager for Ashley, not a sporadic hype man.",
-          "anti_identity": "Not the friend who drops in with big ideas and disappears when things feel heavy.",
-          "practices": [
-            "Check in with a short voice note once a week that asks about her heart, not just Temple metrics.",
-            "Pray for her rest and emotional health, not only for Temple's numbers or milestones."
-          ],
-          "horizon": "this_season",
-          "gravity": "covenant",
-          "scripture_refs": [
-            "Matthew 6:11"
-          ],
-          "people_refs": [
-            "ashley"
-          ]
-        }
-      ],
-      "know": [
-        {
-          "id": "2025-11-22-know-temple-manna-timing",
-          "truth": "Temple is meant to grow on God's timing and daily bread, not just relentless hustle.",
-          "lie": "If we do not constantly push and grind, Temple will stall and die.",
-          "horizon": "this_season",
-          "gravity": "high",
-          "scripture_refs": [
-            "Matthew 6:11"
-          ],
-          "people_refs": [
-            "ashley"
-          ]
-        }
-      ],
-      "do": [
-        {
-          "id": "2025-11-22-do-ashley-heart-checkin",
-          "action": "Send Ashley a short voice note this week asking specifically how her heart is, not just how Temple fundraising is going.",
-          "kind": "action",
-          "clarity": "high",
-          "horizon": "this_week",
-          "gravity": "high",
-          "due": "2025-11-25",
-          "people_refs": [
-            "ashley"
-          ],
-          "calendar_hint": "reachout"
-        },
-        {
-          "id": "2025-11-22-do-pray-for-rest",
-          "action": "Pray intentionally for Ashley's rest and emotional health, not only for Temple's progress.",
-          "kind": "experiment",
-          "clarity": "medium",
-          "horizon": "this_week",
-          "gravity": "high",
-          "people_refs": [
-            "ashley"
-          ],
-          "calendar_hint": "prayer"
-        }
-      ],
-      "feel": [
-        {
-          "id": "2025-11-22-feel-burdened-but-hopeful",
-          "current_emotion": "burdened but hopeful",
-          "intensity": 3,
-          "trigger": "Hearing how much weight Ashley is carrying around Temple's future and fundraising.",
-          "desired_direction": "Toward gratitude and steady, faithful support instead of anxiety or pressure.",
-          "body_cues": "Sense of heaviness in the chest and shoulders when thinking about how much she is carrying.",
-          "people_refs": [
-            "ashley"
-          ],
-          "scripture_refs": [
-            "Matthew 6:11"
-          ]
-        }
-      ]
-    }
-  ]
+	"captures": [
+		{
+			"id": "2025-11-26-angel-section-lead",
+			"created_at": "2025-11-26T07:30:00-05:00",
+			"status": "reviewed",
+			"source": "voice",
+			"location": "car",
+			"domains": ["trader-joes", "faith"],
+			"speakers": [
+				{
+					"id": "andrew",
+					"name": "Andrew",
+					"role": "self"
+				},
+				{
+					"id": "angel",
+					"name": "Angel",
+					"role": "mentioned"
+				}
+			],
+			"people": [
+				{
+					"person_id": "angel",
+					"name": "Angel",
+					"relationship": "Store Leader",
+					"domains": ["trader-joes"],
+					"note": "Talk about taking a section and demonstrating leadership through a micro-team."
+				}
+			],
+			"scriptures": [
+				{
+					"reference": "Hebrews 6:19",
+					"themes": ["hope", "stability", "storms"]
+				}
+			],
+			"be": [
+				{
+					"id": "2025-11-26-be-calm-present-leader",
+					"statement": "Be a calm, present leader under pressure.",
+					"anti_identity": "Not the frantic firefighter who spreads anxiety.",
+					"practices": [
+						"Pause three seconds before responding to chaos.",
+						"Ask one clarifying question before giving direction."
+					],
+					"horizon": "this_season",
+					"gravity": "high",
+					"scripture_refs": ["Hebrews 6:19"],
+					"people_refs": ["angel"]
+				}
+			],
+			"know": [
+				{
+					"id": "2025-11-26-know-section-quest",
+					"truth": "Section leadership is about owning a micro-team, not chasing a title.",
+					"lie": "If I do not get a section quickly, I am failing.",
+					"horizon": "this_season",
+					"gravity": "medium",
+					"scripture_refs": [],
+					"people_refs": ["angel"]
+				}
+			],
+			"do": [
+				{
+					"id": "2025-11-26-do-text-angel-1on1",
+					"action": "Text Angel to schedule a 1:1 about taking a section.",
+					"kind": "action",
+					"clarity": "high",
+					"horizon": "this_week",
+					"gravity": "high",
+					"due": "2025-11-28",
+					"people_refs": ["angel"],
+					"calendar_hint": "block-30"
+				}
+			],
+			"feel": [
+				{
+					"id": "2025-11-26-feel-frustrated-training",
+					"current_emotion": "frustrated",
+					"intensity": 3,
+					"trigger": "Lack of proactive leadership training structure.",
+					"desired_direction": "Curious and hopeful about building the structure I want.",
+					"body_cues": "Tight chest, shallow breathing.",
+					"people_refs": ["angel"],
+					"scripture_refs": ["Hebrews 6:19"]
+				}
+			]
+		},
+		{
+			"id": "2025-11-25-ashley-evening-processing",
+			"created_at": "2025-11-25T21:45:00-05:00",
+			"status": "structured",
+			"source": "voice",
+			"location": "home",
+			"domains": ["temple", "relationships", "faith"],
+			"speakers": [
+				{
+					"id": "andrew",
+					"name": "Andrew",
+					"role": "self"
+				},
+				{
+					"id": "ashley",
+					"name": "Ashley",
+					"role": "mentioned"
+				}
+			],
+			"people": [
+				{
+					"person_id": "ashley",
+					"name": "Ashley",
+					"relationship": "Friend / Temple founder",
+					"domains": ["temple", "faith"],
+					"note": "Carrying a lot for Temple; excited but stretched by fundraising."
+				}
+			],
+			"scriptures": [
+				{
+					"reference": "Matthew 6:11",
+					"themes": ["daily bread", "trust"]
+				}
+			],
+			"be": [
+				{
+					"id": "2025-11-25-be-steady-encourager",
+					"statement": "Be a steady encourager for Ashley, not a sporadic hype man.",
+					"anti_identity": "Not the friend who only shows up when it is exciting.",
+					"practices": [
+						"Check in with a short voice note once a week.",
+						"Pray specifically for her rest, not just Temple growth."
+					],
+					"horizon": "this_season",
+					"gravity": "covenant",
+					"scripture_refs": ["Matthew 6:11"],
+					"people_refs": ["ashley"]
+				}
+			],
+			"know": [
+				{
+					"id": "2025-11-25-know-temple-manna",
+					"truth": "Temple will grow on God’s timing, not just hustle.",
+					"lie": "If we do not push constantly, Temple will die.",
+					"horizon": "this_season",
+					"gravity": "high",
+					"scripture_refs": ["Matthew 6:11"],
+					"people_refs": ["ashley"]
+				}
+			],
+			"do": [
+				{
+					"id": "2025-11-25-do-text-ashley-checkin",
+					"action": "Send Ashley a short voice note asking how her heart is, not just Temple metrics.",
+					"kind": "action",
+					"clarity": "high",
+					"horizon": "today",
+					"gravity": "medium",
+					"people_refs": ["ashley"],
+					"calendar_hint": "reachout"
+				},
+				{
+					"id": "2025-11-25-do-pray-temple-funding",
+					"action": "Pray specifically for Temple’s next funding step this week.",
+					"kind": "experiment",
+					"clarity": "medium",
+					"horizon": "this_week",
+					"gravity": "high",
+					"people_refs": ["ashley"],
+					"calendar_hint": "prayer"
+				}
+			],
+			"feel": [
+				{
+					"id": "2025-11-25-feel-burden-shared",
+					"current_emotion": "burdened but hopeful",
+					"intensity": 2,
+					"trigger": "Hearing how much weight Ashley is carrying.",
+					"desired_direction": "Grateful and steady, carrying some of that in prayer and action.",
+					"body_cues": "Slight heaviness in shoulders.",
+					"people_refs": ["ashley"],
+					"scripture_refs": ["Matthew 6:11"]
+				}
+			]
+		},
+		{
+			"id": "2025-11-22-ashley-andrew",
+			"created_at": "2025-11-22T20:00:00-05:00",
+			"status": "structured",
+			"source": "voice",
+			"location": "home",
+			"domains": ["temple", "faith", "relationships"],
+			"speakers": [
+				{
+					"id": "andrew",
+					"name": "Andrew",
+					"role": "self"
+				},
+				{
+					"id": "ashley",
+					"name": "Ashley",
+					"role": "guest"
+				}
+			],
+			"people": [
+				{
+					"person_id": "ashley",
+					"name": "Ashley",
+					"relationship": "Friend / Temple founder",
+					"domains": ["temple", "faith"],
+					"note": "Carrying excitement and weight for Temple; pulled between trusting God's timing and feeling pressure to push fundraising and logistics forward without burning out."
+				}
+			],
+			"scriptures": [
+				{
+					"reference": "Matthew 6:11",
+					"themes": ["daily bread", "trust", "provision"]
+				}
+			],
+			"be": [
+				{
+					"id": "2025-11-22-be-steady-encourager",
+					"statement": "Be a steady encourager for Ashley, not a sporadic hype man.",
+					"anti_identity": "Not the friend who drops in with big ideas and disappears when things feel heavy.",
+					"practices": [
+						"Check in with a short voice note once a week that asks about her heart, not just Temple metrics.",
+						"Pray for her rest and emotional health, not only for Temple's numbers or milestones."
+					],
+					"horizon": "this_season",
+					"gravity": "covenant",
+					"scripture_refs": ["Matthew 6:11"],
+					"people_refs": ["ashley"]
+				}
+			],
+			"know": [
+				{
+					"id": "2025-11-22-know-temple-manna-timing",
+					"truth": "Temple is meant to grow on God's timing and daily bread, not just relentless hustle.",
+					"lie": "If we do not constantly push and grind, Temple will stall and die.",
+					"horizon": "this_season",
+					"gravity": "high",
+					"scripture_refs": ["Matthew 6:11"],
+					"people_refs": ["ashley"]
+				}
+			],
+			"do": [
+				{
+					"id": "2025-11-22-do-ashley-heart-checkin",
+					"action": "Send Ashley a short voice note this week asking specifically how her heart is, not just how Temple fundraising is going.",
+					"kind": "action",
+					"clarity": "high",
+					"horizon": "this_week",
+					"gravity": "high",
+					"due": "2025-11-25",
+					"people_refs": ["ashley"],
+					"calendar_hint": "reachout"
+				},
+				{
+					"id": "2025-11-22-do-pray-for-rest",
+					"action": "Pray intentionally for Ashley's rest and emotional health, not only for Temple's progress.",
+					"kind": "experiment",
+					"clarity": "medium",
+					"horizon": "this_week",
+					"gravity": "high",
+					"people_refs": ["ashley"],
+					"calendar_hint": "prayer"
+				}
+			],
+			"feel": [
+				{
+					"id": "2025-11-22-feel-burdened-but-hopeful",
+					"current_emotion": "burdened but hopeful",
+					"intensity": 3,
+					"trigger": "Hearing how much weight Ashley is carrying around Temple's future and fundraising.",
+					"desired_direction": "Toward gratitude and steady, faithful support instead of anxiety or pressure.",
+					"body_cues": "Sense of heaviness in the chest and shoulders when thinking about how much she is carrying.",
+					"people_refs": ["ashley"],
+					"scripture_refs": ["Matthew 6:11"]
+				}
+			]
+		}
+	]
 }
