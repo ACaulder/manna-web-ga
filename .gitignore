@@ -18,3 +18,13 @@ coverage/
 
 # Logs
 *.log
+
+# local secrets / machine-specific
+.npmrc
+.env
+.env.*
+.venv/
+**/.venv/
+
+# local sandbox artifacts (keep out of git)
+MannaWorker_from_gd_manna_20251209_151530/
