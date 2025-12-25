@@ -1,6 +1,11 @@
 #!/bin/sh
-branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
-if [ "$branch" = "main" ]; then
-  echo "🚫 Refusing to push directly to main. Create a branch + PR."
-  exit 1
-fi
+# Block pushes *to main* only. Allow other pushes (like deleting branches).
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "🚫 Refusing to push directly to main. Create a branch + PR."
+    exit 1
+  fi
+done
+
+exit 0
