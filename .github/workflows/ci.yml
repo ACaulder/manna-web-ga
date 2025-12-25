@@ -2,91 +2,59 @@ name: CI
 
 on:
   pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
+  checks: write
+  statuses: write
 
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
-        if: hashFiles('package.json') != ''
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 24
+          cache: npm
 
-      - name: Install deps
-        if: hashFiles('package.json') != ''
-        shell: bash
-        run: |
-          set -euo pipefail
+      - name: Install
+        run: npm ci
 
-          if [ -f pnpm-lock.yaml ]; then
-            corepack enable
-            pnpm install --frozen-lockfile
-            echo "PM=pnpm" >> "$GITHUB_ENV"
-          elif [ -f yarn.lock ]; then
-            corepack enable
-            yarn install --immutable || yarn install --frozen-lockfile || yarn install
-            echo "PM=yarn" >> "$GITHUB_ENV"
-          elif [ -f package-lock.json ]; then
-            npm ci
-            echo "PM=npm" >> "$GITHUB_ENV"
-          else
-            npm install
-            echo "PM=npm" >> "$GITHUB_ENV"
-          fi
+      - name: Lint
+        run: npm run lint --if-present
 
-      - name: Lint / Test / Build
-        if: hashFiles('package.json') != ''
-        shell: bash
-        run: |
-          set -euo pipefail
-          PM="${PM:-npm}"
+      - name: Test
+        run: npm run test --if-present
 
-          if [ "$PM" = "yarn" ]; then
-            if node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.lint?0:1)"; then yarn lint; fi
-            if node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.test?0:1)"; then yarn test; fi
-            if node -e "p=require('./package.json');process.exit(p.scripts&&p.scripts.build?0:1)"; then yarn build; fi
-          else
-            $PM run lint --if-present
-            $PM run test --if-present
-            $PM run build --if-present
-          fi
+      - name: Build
+        run: npm run build --if-present
 
-
-      - name: Publish required build gate (build)
-        if: ${{ success() }}
+      # Critical: publish the required "build" gate onto the PR HEAD SHA
+      - name: Publish required build gate on PR head SHA
+        if: ${{ github.event_name == 'pull_request' && success() }}
         env:
           GH_TOKEN: ${{ github.token }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          echo "Publishing required gate on $HEAD_SHA"
-          # 1) legacy commit status context (sometimes required)
-          gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/$HEAD_SHA" \
-            -f state=success -f context=build \
-            -f description="CI passed" \
+          echo "Publishing build gate to HEAD_SHA=$HEAD_SHA"
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${HEAD_SHA}" \
+            -f state=success \
+            -f context=build \
+            -f description="CI passed on PR head" \
             -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          # 2) check-run named exactly 'build' (this is the usual ruleset gate)
+
+          # Some rulesets want a check-run named "build" on the head SHA too
           gh api -X POST "repos/${GITHUB_REPOSITORY}/check-runs" \
             -H "Accept: application/vnd.github+json" \
             -f name=build \
-            -f head_sha="$HEAD_SHA" \
+            -f head_sha="${HEAD_SHA}" \
             -f status=completed \
             -f conclusion=success \
             -f 'output[title]=build' \
             -f 'output[summary]=Published by CI to satisfy repo ruleset'
-      - name: Publish legacy required status (build)
-        if: ${{ success() }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-            -f state=success -f context=build \
-            -f description="CI passed" \
-            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-  statuses: write
-  checks: write
