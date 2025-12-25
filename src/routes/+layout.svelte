@@ -1,3 +1,7 @@
+<script lang="ts">
+	import Analytics from '$lib/Analytics.svelte';
+</script>
+
 <svelte:head>
 	<title>Manna</title>
 	<meta name="description" content="Manna – private Digital Brain prototype." />
@@ -5,6 +9,7 @@
 </svelte:head>
 
 <main class="app">
+	<Analytics />
 	<slot />
 </main>
 

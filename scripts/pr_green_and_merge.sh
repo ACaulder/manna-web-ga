@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+
+needs_legacy_build() {
+  # Returns 0 if a "build" gate is already present on the PR, else 1.
+  # Prefer structured output; fallback is best-effort.
+  local names=""
+  if names="$(gh pr checks "$PR" --repo "$REPO" --json name --jq '.[].name' 2>/dev/null)"; then
+    echo "$names" | grep -qx "build"
+    return $?
+  fi
+
+  # Fallback: parse human output (not perfect, but better than nothing)
+  gh pr checks "$PR" --repo "$REPO" 2>/dev/null | awk '{print $1}' | sed 's/^[✓X!]*//g' | grep -qx "build"
+}
+
 PR_NUM="${1:-10}"
 
 command -v gh >/dev/null || { echo "ERROR: gh CLI not found."; exit 1; }
