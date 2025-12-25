@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
 	const API_BASE = '/api';
-	const SUMMARY_DIR = '/Users/andrewcaulder/MannaWorker/var/summaries';
+	const SUMMARY_DIR = 'var/summaries';
 
 	type TopicData = { keywords: string[]; size: number; docs: string[] };
 	type Topics = Record<number, TopicData>;
