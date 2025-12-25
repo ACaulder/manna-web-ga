@@ -171,6 +171,22 @@ npx prettier --write .
 echo "=== npm run lint"
 npm run lint
 
+
+# --- Never commit build artifacts (adapter-vercel writes .vercel/output) ---
+echo "=== Guard: prevent committing build artifacts"
+touch .gitignore
+grep -qxF '.vercel/output/' .gitignore || echo '.vercel/output/' >> .gitignore
+
+# If artifacts are tracked (from a past mistake), untrack them now
+if git ls-files --error-unmatch .vercel/output >/dev/null 2>&1; then
+  echo "Untracking: .vercel/output"
+  git rm -r --cached .vercel/output >/dev/null 2>&1 || true
+fi
+
+# Always remove generated output before staging/committing
+rm -rf .vercel/output >/dev/null 2>&1 || true
+
+
 echo "=== npm run build"
 npm run build
 
