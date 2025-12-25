@@ -3,9 +3,11 @@
 This repo is intended to run under the Google Antigravity secure workspace.
 
 ## Workspace Root
+
 `~/ANTIGRAVITY_SANDBOX/`
 
 ## Non-negotiable Rules
+
 - No references to:
   - `~/Library/Mobile Documents/`
   - `~/Library/CloudStorage/`
@@ -16,7 +18,9 @@ This repo is intended to run under the Google Antigravity secure workspace.
 - No destructive default operations
 
 ## Verification
+
 Run:
+
 - `scripts/antigravity_env_check.sh`
 - `scripts/antigravity_verify.sh`
 
