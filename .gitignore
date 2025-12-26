@@ -31,3 +31,6 @@ MannaWorker_from_gd_manna_20251209_151530/
 .vercel/output/
 
 .vercel/
+
+# local scratch
+var/
