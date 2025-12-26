@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 // src/routes/reachout.ics/+server.ts
 
 import type { RequestHandler } from '@sveltejs/kit';
@@ -37,13 +38,19 @@ const ICS_BODY = buildIcsCalendar({
 	events: reachoutEvents
 });
 
-export const GET: RequestHandler = () => {
-	return new Response(ICS_BODY, {
-		headers: {
-			'Content-Type': 'text/calendar; charset=utf-8',
-			'Content-Disposition': 'attachment; filename="reachout.ics"',
-			'Cache-Control': 'public, max-age=300',
-			'X-Robots-Tag': 'noindex, nofollow'
-		}
+export const GET: RequestHandler = ({ request }) => {
+	const etag = '"' + createHash('sha256').update(ICS_BODY).digest('base64') + '"';
+	const inm = request.headers.get('if-none-match');
+
+	const headers = new Headers({
+		'Content-Type': 'text/calendar; charset=utf-8',
+		'Content-Disposition': 'attachment; filename="reachout.ics"',
+		'Cache-Control': 'public, max-age=300',
+		'X-Robots-Tag': 'noindex, nofollow'
 	});
+	headers.set('ETag', etag);
+
+	if (inm && inm === etag) return new Response(null, { status: 304, headers });
+
+	return new Response(ICS_BODY, { headers });
 };

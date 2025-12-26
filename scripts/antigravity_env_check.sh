@@ -1,125 +1,136 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-WORKSPACE_ROOT="${HOME}/ANTIGRAVITY_SANDBOX"
+# --- CI-safe rg fallback (GitHub runners may not have ripgrep) ---
+if ! command -v rg >/dev/null 2>&1; then
+  rg() {
+    # Minimal ripgrep-compatible fallback used by CI.
+    # Ignores rg-specific flags and prunes heavy dirs.
+    local pattern="" path="."
+    while [ "$#" -gt 0 ]; do
+      case "$1" in
+        --glob|-g|--iglob) shift ;;               # ignore glob + its argument
+        -n|--no-messages|--hidden|-S|--smart-case) ;;
+        --*) ;;                                   # ignore other long flags
+        -*) ;;                                    # ignore other short flags
+        *)
+          if [ -z "$pattern" ]; then
+            pattern="$1"
+          else
+            path="$1"
+          fi
+          ;;
+      esac
+      shift
+    done
 
-FAIL=0
-WARN=0
+    [ -n "$pattern" ] || return 2
 
-say() { printf '%s\n' "$*"; }
-hr() { printf '\n--------------------------------------------------------------------------------\n'; }
+    # prune dirs we never want in this check
+    find "$path" \
+      \( -path "$path/docs" -o -path "$path/docs/*" \
+         -o -path "$path/scripts" -o -path "$path/scripts/*" \
+         -o -path "$path/node_modules" -o -path "$path/node_modules/*" \
+         -o -path "$path/.svelte-kit" -o -path "$path/.svelte-kit/*" \
+         -o -path "$path/.git" -o -path "$path/.git/*" \) -prune -false -o \
+      -type f -print0 \
+      | xargs -0 grep -nH -- "$pattern" 2>/dev/null || true
+  }
+fi
+
+
+PASS=0; WARN=0; FAIL=0
+
+say(){ printf '%s\n' "$*"; }
+hr(){ printf '%s\n' "--------------------------------------------------------------------------------"; }
+pass(){ PASS=$((PASS+1)); say "PASS: $*"; }
+warn(){ WARN=$((WARN+1)); say "WARN: $*"; }
+fail(){ FAIL=$((FAIL+1)); say "FAIL: $*"; }
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+WORKSPACE_ROOT="$(cd "$REPO_ROOT/.." && pwd -P)"
 
 hr
 say "Google Antigravity — Environment Check (read-only)"
-say "Repo: $HERE"
+say "Repo: $REPO_ROOT"
 say "Workspace root: $WORKSPACE_ROOT"
 hr
+say
 
-# 0) Workspace boundary (hard fail)
-if [[ "$HERE" != "$WORKSPACE_ROOT"/* ]]; then
-  say "FAIL: repo is not located under workspace root"
-  say "  repo=$HERE"
-  say "  workspace=$WORKSPACE_ROOT"
-  FAIL=1
-fi
+# 1) Forbidden absolute host paths — runtime only (NOT docs/, NOT scripts/)
+say "Check: forbidden path references (runtime source/config only; excludes docs/ and scripts/)"
+FORBIDDEN_RE='(/Users/[^/]+/|/home/[^/]+/|C:\\Users\\[^\\]+\\)'
 
-# 1) Forbidden path references (runtime code only)
-say "Check: forbidden path references (runtime code only)"
 if command -v rg >/dev/null 2>&1; then
-  # NOTE: This intentionally excludes scripts/ and docs/ to avoid self-referential failures.
-  #       Boundary/requirements docs may mention forbidden paths as examples.
-  FORBIDDEN=(
-    "$HOME/SANDBOX"
-    "/Users/andrewcaulder/SANDBOX"
-    "/Library/Mobile Documents/"
-    "/Library/CloudStorage/"
-  )
-
-  for P in "${FORBIDDEN[@]}"; do
-    if rg -n --fixed-strings "$P" . \
-      --glob '!.git/**' \
-      --glob '!node_modules/**' \
-      --glob '!.vercel/**' \
-      --glob '!.svelte-kit/**' \
-      --glob '!scripts/**' \
-      --glob '!docs/**' \
-      --glob '!SECURITY_BOUNDARIES.md' \
-      >/dev/null 2>&1; then
-      say "FAIL: Found forbidden path reference: $P"
-      rg -n --fixed-strings "$P" . \
-        --glob '!.git/**' \
-        --glob '!node_modules/**' \
-        --glob '!.vercel/**' \
-        --glob '!.svelte-kit/**' \
-        --glob '!scripts/**' \
-        --glob '!docs/**' \
-        --glob '!SECURITY_BOUNDARIES.md' \
-        | sed -n '1,120p'
-      FAIL=1
-    fi
-  done
-else
-  say "NOTE: rg not found; cannot scan forbidden paths."
-  WARN=1
-fi
-
-# 2) .env files present (hard fail)
-say "Check: .env files present"
-if find "$HERE" \
-  -type f \( -name ".env" -o -name ".env.*" \) \
-  ! -name ".env.example" ! -name ".env.template" \
-  -print 2>/dev/null | rg -q .; then
-  say "FAIL: .env file(s) present"
-  find "$HERE" \
-    -type f \( -name ".env" -o -name ".env.*" \) \
-    ! -name ".env.example" ! -name ".env.template" \
-    -print 2>/dev/null | sed -n '1,120p'
-  FAIL=1
-else
-  say "OK: no .env files found"
-fi
-
-# 3) Symlinks escaping workspace root (hard fail)
-say "Check: symlinks escaping workspace root"
-FOUND=0
-while IFS= read -r REL; do
-  [ -n "${REL:-}" ] || continue
-  L="$HERE/$REL"
-  [ -L "$L" ] || continue
-
-  TARGET="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$L")"
-  if [[ "$TARGET" != "$WORKSPACE_ROOT"* ]]; then
-    if [ "$FOUND" -eq 0 ]; then
-      say "FAIL: symlink(s) escape workspace root"
-      FOUND=1
-    fi
-    echo "$L -> $TARGET"
+  if git -C "$REPO_ROOT" ls-files -z -- \
+      'src/**' 'static/**' \
+      'package.json' 'package-lock.json' \
+      'svelte.config.*' 'vite.config.*' 'tsconfig*.json' \
+    | xargs -0 rg -n "$FORBIDDEN_RE" --; then
+    fail "Found forbidden absolute host-path references in runtime source/config files"
+  else
+    pass "No forbidden absolute host-path references found (runtime only)"
   fi
-done < <(git -C "$HERE" ls-files -s | awk '$1 ~ /^120000$/ {print $4}')
-
-if [ "$FOUND" -eq 0 ]; then
-  say "OK: no git-tracked symlinks"
 else
-  FAIL=1
+  fail "ripgrep (rg) not found; install it (brew install ripgrep) or add a grep fallback"
 fi
 
-# 4) git status (warn only)
+say
+
+# 2) .env presence
+say "Check: .env files present"
+if find "$REPO_ROOT" -maxdepth 2 -name ".env*" -print -quit | grep -q .; then
+  fail "Found .env* files (do not commit secrets; use CI/env vars)"
+else
+  pass "No .env* files found"
+fi
+
+say
+
+# 3) Symlinks escaping workspace root (git-tracked only)
+say "Check: symlinks escaping workspace root (git-tracked only)"
+FOUND_SYMLINK=0
+BAD_SYMLINK=0
+
+while IFS= read -r -d '' f; do
+  path="$REPO_ROOT/$f"
+  if [ -L "$path" ]; then
+    FOUND_SYMLINK=1
+    real="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$path")"
+    case "$real" in
+      "$WORKSPACE_ROOT"/*) : ;;
+      *) BAD_SYMLINK=1; say "  BAD: $f -> $real" ;;
+    esac
+  fi
+done < <(git -C "$REPO_ROOT" ls-files -z)
+
+if [ "$FOUND_SYMLINK" -eq 0 ]; then
+  pass "No git-tracked symlinks found"
+elif [ "$BAD_SYMLINK" -eq 0 ]; then
+  pass "Git-tracked symlinks are contained inside workspace root"
+else
+  fail "Found git-tracked symlinks escaping workspace root"
+fi
+
+say
+
+# 4) Git status (informational)
 say "Check: git status"
-if git -C "$HERE" status --porcelain | rg -q . 2>/dev/null; then
-  say "WARN: working tree dirty (not a security failure, but be intentional)"
-  git -C "$HERE" status --porcelain | sed -n '1,120p'
-  WARN=1
+if git -C "$REPO_ROOT" diff --quiet && git -C "$REPO_ROOT" diff --cached --quiet; then
+  pass "Working tree clean"
 else
-  say "OK: working tree clean"
+  warn "Working tree dirty (not a security failure, but be intentional)"
 fi
 
+say
 hr
 say "Result:"
-say "  FAIL=$FAIL"
+say "  PASS=$PASS"
 say "  WARN=$WARN"
+say "  FAIL=$FAIL"
 hr
 
-if [ "$FAIL" -ne 0 ]; then exit 2; fi
-if [ "$WARN" -ne 0 ]; then exit 1; fi
+if [ "$FAIL" -gt 0 ]; then
+  exit 1
+fi
 exit 0

@@ -1,3 +1,5 @@
+const FIXED_ICS_DTSTAMP = '20250101T000000Z';
+
 // src/lib/ics.ts
 
 export type IcsEventConfig = {
@@ -24,26 +26,13 @@ function escapeText(text: string): string {
 /**
  * Format current UTC time as YYYYMMDDTHHMMSSZ for DTSTAMP.
  */
-function nowUtcStamp(): string {
-	const d = new Date();
-	const pad = (n: number) => n.toString().padStart(2, '0');
-
-	const year = d.getUTCFullYear();
-	const month = pad(d.getUTCMonth() + 1);
-	const day = pad(d.getUTCDate());
-	const hour = pad(d.getUTCHours());
-	const min = pad(d.getUTCMinutes());
-	const sec = pad(d.getUTCSeconds());
-
-	return `${year}${month}${day}T${hour}${min}${sec}Z`;
-}
 
 /**
  * Build a full ICS calendar string from a list of events.
  */
 export function buildIcsCalendar(opts: { prodId?: string; events: IcsEventConfig[] }): string {
 	const prodId = opts.prodId ?? '-//Manna//Calendar 1.0//EN';
-	const dtstamp = nowUtcStamp();
+	const dtstamp = FIXED_ICS_DTSTAMP;
 
 	const lines: string[] = [
 		'BEGIN:VCALENDAR',
