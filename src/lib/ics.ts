@@ -1,3 +1,5 @@
+const FIXED_ICS_DTSTAMP = "20250101T000000Z";
+
 // src/lib/ics.ts
 
 export type IcsEventConfig = {
@@ -43,7 +45,7 @@ function nowUtcStamp(): string {
  */
 export function buildIcsCalendar(opts: { prodId?: string; events: IcsEventConfig[] }): string {
 	const prodId = opts.prodId ?? '-//Manna//Calendar 1.0//EN';
-	const dtstamp = nowUtcStamp();
+	const dtstamp = FIXED_ICS_DTSTAMP;
 
 	const lines: string[] = [
 		'BEGIN:VCALENDAR',
