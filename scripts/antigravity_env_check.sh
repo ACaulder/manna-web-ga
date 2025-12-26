@@ -1,6 +1,44 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# --- CI-safe rg fallback (GitHub runners may not have ripgrep) ---
+if ! command -v rg >/dev/null 2>&1; then
+  rg() {
+    # Minimal ripgrep-compatible fallback used by CI.
+    # Ignores rg-specific flags and prunes heavy dirs.
+    local pattern="" path="."
+    while [ "$#" -gt 0 ]; do
+      case "$1" in
+        --glob|-g|--iglob) shift ;;               # ignore glob + its argument
+        -n|--no-messages|--hidden|-S|--smart-case) ;;
+        --*) ;;                                   # ignore other long flags
+        -*) ;;                                    # ignore other short flags
+        *)
+          if [ -z "$pattern" ]; then
+            pattern="$1"
+          else
+            path="$1"
+          fi
+          ;;
+      esac
+      shift
+    done
+
+    [ -n "$pattern" ] || return 2
+
+    # prune dirs we never want in this check
+    find "$path" \
+      \( -path "$path/docs" -o -path "$path/docs/*" \
+         -o -path "$path/scripts" -o -path "$path/scripts/*" \
+         -o -path "$path/node_modules" -o -path "$path/node_modules/*" \
+         -o -path "$path/.svelte-kit" -o -path "$path/.svelte-kit/*" \
+         -o -path "$path/.git" -o -path "$path/.git/*" \) -prune -false -o \
+      -type f -print0 \
+      | xargs -0 grep -nH -- "$pattern" 2>/dev/null || true
+  }
+fi
+
+
 PASS=0; WARN=0; FAIL=0
 
 say(){ printf '%s\n' "$*"; }

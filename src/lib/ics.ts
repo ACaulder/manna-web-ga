@@ -1,4 +1,4 @@
-const FIXED_ICS_DTSTAMP = "20250101T000000Z";
+const FIXED_ICS_DTSTAMP = '20250101T000000Z';
 
 // src/lib/ics.ts
 
